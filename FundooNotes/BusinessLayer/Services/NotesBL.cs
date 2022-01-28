@@ -1,24 +1,26 @@
 ﻿using BusinessLayer.Interfaces;
 using CommonLayer.Models;
+using RepositoryLayer.Entites;
 using RepositoryLayer.Interfaces;
+using RepositoryLayer.Services;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace BusinessLayer.Services
 {
-    public class UserBL : IUserBL
+    public class NotesBL:INotesBL
     {
-        IUserRL userRL;
-        public UserBL(IUserRL userRL)
+        INotesRL notesRL;
+        public NotesBL(INotesRL notesRL)
         {
-            this.userRL = userRL;
+            this.notesRL = notesRL;
         }
-        public bool Registration(UserRegistration user)
+        public bool CreateNotes(NotesModel notesModel)
         {
             try
             {
-                return userRL.Registration(user);
+                return notesRL.CreateNotes(notesModel);
             }
             catch (Exception)
             {
@@ -26,11 +28,11 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
-        public bool Login(UserLogin userLogin)
+        public IEnumerable<Notes> GetAllNotes()
         {
             try
             {
-                return userRL.Login(userLogin);
+                return notesRL.GetAllNotes();
             }
             catch (Exception)
             {
@@ -38,11 +40,11 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
-        public string GenerateJwtToken(string email)
+        public IEnumerable<Notes> GetAllNotesByUserID(int id)
         {
             try
             {
-                return userRL.GenerateJwtToken(email);
+                return notesRL.GetAllNotesByUserID(id);
             }
             catch (Exception)
             {
@@ -50,11 +52,14 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
-        public string ForgetPassword(string email)
+        public bool DeleteNote(int notesID)
         {
             try
             {
-                return userRL.ForgetPassword(email);
+                if (notesRL.DeleteNote(notesID))
+                    return true;
+                else
+                    return false;
             }
             catch (Exception)
             {
@@ -62,11 +67,14 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
-        public bool ResetPassword(string email,string password, string confirmPassword)
+        public bool UpdateNotes(int noteID,UpdateNotesModel notesModel)
         {
             try
             {
-                return userRL.ResetPassword(email,password, confirmPassword);
+                if (notesRL.UpdateNotes(noteID,notesModel))
+                    return true;
+                else
+                    return false;
             }
             catch (Exception)
             {
@@ -74,7 +82,5 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
-
-
     }
 }

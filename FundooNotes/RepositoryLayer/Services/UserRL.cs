@@ -18,6 +18,7 @@ namespace RepositoryLayer.Services
         Context context;
        
         private readonly IConfiguration configuration;
+        
         public UserRL(Context context, IConfiguration config)
         {
             this.context = context;//appcontext to for api
@@ -93,6 +94,28 @@ namespace RepositoryLayer.Services
                 else
                 {
                     return null;
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public bool ResetPassword(string email,string password,string confirmPassword)
+        {
+            try
+            {
+                if(password.Equals(confirmPassword))
+                {
+                    User user = context.Users.Where(e => e.Email==email).FirstOrDefault();
+                    user.Password = confirmPassword;
+                    context.SaveChanges();
+                    return true;
+                }
+                else
+                {
+                    return false;
                 }
             }
             catch (Exception)

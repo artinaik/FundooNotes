@@ -39,6 +39,8 @@ namespace FundooNotes
             services.AddControllers();
             services.AddTransient<IUserBL, UserBL>();
             services.AddTransient<IUserRL, UserRL>();
+            services.AddTransient<INotesBL, NotesBL>();
+            services.AddTransient<INotesRL, NotesRL>();
             services.AddSwaggerGen(swagger =>
             {
                 // To Enable authorization using Swagger (JWT)
@@ -65,6 +67,8 @@ namespace FundooNotes
                     }
                 });
             });
+            //var jwtSection = Configuration.GetSection("Jwt:Key");
+            
             services.AddAuthentication(option =>
             {
                 option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

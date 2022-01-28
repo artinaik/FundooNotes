@@ -51,6 +51,7 @@ namespace FundooNotes.Controllers
                 {
                     var tokenString = userBL.GenerateJwtToken(login.Email);
                     return Ok(new { Token = tokenString, Message = "Login successfull" });
+
                 }
                 else
                 {
@@ -64,19 +65,40 @@ namespace FundooNotes.Controllers
             }
         }
         [HttpPost]
-        public IActionResult ForgetPassword(UserLogin login)
+        public IActionResult ForgetPassword(string email)
         {
             try
             {
-                return userBL.ForgetPassword(login.Email);
+                string token = userBL.ForgetPassword(email);
+                if(token!=null)
+                {                  
+                    return Ok(new { message = "Token sent succesfully.Please check your email for password reset" });
+                }
+                else
+                {
+                    return this.BadRequest(new { Success = false, message = "Email not registered" });
+                }
+
+
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
-
+        [HttpPost]
+        public IActionResult ResetPassword(string email,string password,string confirmPassword)
+        {
+            try
+            {
+                userBL.ResetPassword(email,password, confirmPassword);
+                return Ok(new { message = "Password reset done succussfully" });
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
 
     }
 }
