@@ -26,7 +26,7 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
-        public bool Login(UserLogin userLogin)
+        public string Login(UserLogin userLogin)
         {
             try
             {

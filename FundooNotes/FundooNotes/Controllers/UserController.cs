@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace FundooNotes.Controllers
@@ -21,6 +22,7 @@ namespace FundooNotes.Controllers
         {
             this.userBL = userBL;
         }
+        [Authorize]
         [HttpPost]
         public IActionResult AddUser(UserRegistration user)
         {
@@ -42,14 +44,15 @@ namespace FundooNotes.Controllers
             }
         }
 
+        
         [HttpPost]
         public IActionResult Login(UserLogin login)
         {
             try
             {
-                if (userBL.Login(login))
+                string tokenString = userBL.Login(login);
+                if (tokenString!=null)
                 {
-                    var tokenString = userBL.GenerateJwtToken(login.Email);
                     return Ok(new { Token = tokenString, Message = "Login successfull" });
 
                 }
@@ -64,6 +67,7 @@ namespace FundooNotes.Controllers
                 throw;
             }
         }
+       
         [HttpPost]
         public IActionResult ForgetPassword(string email)
         {
@@ -86,11 +90,14 @@ namespace FundooNotes.Controllers
                 throw;
             }
         }
+        [Authorize]
         [HttpPost]
-        public IActionResult ResetPassword(string email,string password,string confirmPassword)
+        public IActionResult ResetPassword(string password,string confirmPassword)
         {
             try
             {
+                var email = User.Claims.First(e => e.Type == "Email").Value;
+                //var email1 = User.FindFirst(ClaimTypes.Email).Value.ToString();
                 userBL.ResetPassword(email,password, confirmPassword);
                 return Ok(new { message = "Password reset done succussfully" });
             }

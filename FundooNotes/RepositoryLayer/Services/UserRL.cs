@@ -48,16 +48,17 @@ namespace RepositoryLayer.Services
             }
         }
 
-        public bool Login(UserLogin userLogin)
+        public string Login(UserLogin userLogin)
         {
             try
             {
                 User user = new User();
-                var result = context.Users.Where(x => x.Email == userLogin.Email && x.Password == userLogin.Password).FirstOrDefault();
-                if (result != null)
-                    return true;
+                user = context.Users.Where(x => x.Email == userLogin.Email && x.Password == userLogin.Password).FirstOrDefault();
+                var id = user.Id;
+                if(user!=null)
+                    return ClaimTokenByID(id);
                 else
-                    return false;
+                    return null;
 
             }
             catch (Exception)
@@ -66,13 +67,26 @@ namespace RepositoryLayer.Services
                 throw;
             }
         }
+        public string ClaimTokenByID(long Id)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(configuration["Jwt:key"]);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim("Id", Id.ToString()) }),
+                Expires = DateTime.UtcNow.AddHours(1),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
         public string GenerateJwtToken(string email)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(configuration["Jwt:key"]);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("Email", email) }),
+                Subject = new ClaimsIdentity(new[] { new Claim("Email", email)}),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
@@ -106,7 +120,8 @@ namespace RepositoryLayer.Services
         {
             try
             {
-                if(password.Equals(confirmPassword))
+                
+                if (password.Equals(confirmPassword))
                 {
                     User user = context.Users.Where(e => e.Email==email).FirstOrDefault();
                     user.Password = confirmPassword;

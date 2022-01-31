@@ -1,5 +1,6 @@
 ﻿using BusinessLayer.Interfaces;
 using CommonLayer.Models;
+using Microsoft.AspNetCore.Http;
 using RepositoryLayer.Entites;
 using RepositoryLayer.Interfaces;
 using RepositoryLayer.Services;
@@ -82,5 +83,66 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
+        public bool Colorchange(long userId, long noteID, string color)
+        {
+            try
+            {
+                return notesRL.Colorchange(userId, noteID, color);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public bool ArchieveChange(long userId, long noteID)
+        {
+            try
+            {
+                return notesRL.ArchieveChange(userId, noteID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public bool PinChange(long userId, long noteID)
+        {
+            try
+            {
+                return notesRL.PinChange(userId, noteID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public bool TrashChange(long userId, long noteID)
+        {
+            try
+            {
+                return notesRL.TrashChange(userId, noteID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public bool UploadImage(long userId, long noteID, IFormFile file)
+        {
+            try
+            {
+                return notesRL.UploadImage(userId,noteID,file);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }
