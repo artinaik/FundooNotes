@@ -15,6 +15,8 @@ namespace RepositoryLayer.AppContext
             }
             public DbSet<User> Users { get; set; }
             public DbSet<Notes> Notes { get; set; }
+            public DbSet<Collaborator> Collaborators { get; set; }
+
     }
     
 }

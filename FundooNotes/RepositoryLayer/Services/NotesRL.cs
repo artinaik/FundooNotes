@@ -29,17 +29,17 @@ namespace RepositoryLayer.Services
             this.configuration = config;//for startup file instance
             this.hostingEnvironment = hostingEnvironment;
         }
-        public bool CreateNotes(NotesModel notesModel)
+        public bool CreateNotes(NotesModel notesModel,long userId)
         {
             try
             {
                 Notes notes = new Notes();
-                notes.Id = notesModel.Id;
+                notes.Id = userId;
                 notes.Title = notesModel.Title;
                 notes.Message = notesModel.Message;
                 notes.Remainder = notesModel.Remainder;
                 notes.Color = notesModel.Color;
-                notes.Image = notesModel.Image.FileName;
+                notes.Image = notesModel.Image;
                 notes.IsArchive = notesModel.IsArchive;
                 notes.IsPin = notesModel.IsPin;
                 notes.IsTrash = notesModel.IsTrash;

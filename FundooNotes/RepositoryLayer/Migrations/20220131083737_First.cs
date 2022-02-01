@@ -54,6 +54,43 @@ namespace RepositoryLayer.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Collaborators",
+                columns: table => new
+                {
+                    CollabID = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    NoteID = table.Column<long>(nullable: false),
+                    CollabEmail = table.Column<string>(nullable: true),
+                    Id = table.Column<long>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Collaborators", x => x.CollabID);
+                    table.ForeignKey(
+                        name: "FK_Collaborators_Users_Id",
+                        column: x => x.Id,
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Collaborators_Notes_NoteID",
+                        column: x => x.NoteID,
+                        principalTable: "Notes",
+                        principalColumn: "NoteId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Collaborators_Id",
+                table: "Collaborators",
+                column: "Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Collaborators_NoteID",
+                table: "Collaborators",
+                column: "NoteID");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Notes_Id",
                 table: "Notes",
@@ -62,6 +99,9 @@ namespace RepositoryLayer.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Collaborators");
+
             migrationBuilder.DropTable(
                 name: "Notes");
 

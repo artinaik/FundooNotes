@@ -9,7 +9,7 @@ namespace RepositoryLayer.Interfaces
 {
     public interface INotesRL
     {
-        public bool CreateNotes(NotesModel notesModel);
+        public bool CreateNotes(NotesModel notesModel,long userId);
         public IEnumerable<Notes> GetAllNotes();
         public IEnumerable<Notes> GetAllNotesByUserID(int id);
         public bool DeleteNote(int notesID);
@@ -19,6 +19,7 @@ namespace RepositoryLayer.Interfaces
         public bool PinChange(long userId, long noteID);
         public bool TrashChange(long userId, long noteID);
         public bool UploadImage(long userId, long noteID, IFormFile file);
+       
 
     }
 }

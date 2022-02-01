@@ -22,7 +22,7 @@ namespace FundooNotes.Controllers
         {
             this.userBL = userBL;
         }
-        [Authorize]
+
         [HttpPost]
         public IActionResult AddUser(UserRegistration user)
         {

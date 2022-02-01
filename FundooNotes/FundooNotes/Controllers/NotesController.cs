@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryLayer.Entites;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -27,7 +28,8 @@ namespace FundooNotes.Controllers
         {
             try
             {
-                if(notesBL.CreateNotes(notesModel))
+                long userId = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                if (notesBL.CreateNotes(notesModel, userId))
                 {
                     return this.Ok(new { Success = true, message = "Notes creation done successfully" });
                 }
@@ -231,5 +233,7 @@ namespace FundooNotes.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        
+
     }
 }

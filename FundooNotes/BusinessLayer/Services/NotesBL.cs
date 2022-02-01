@@ -17,11 +17,11 @@ namespace BusinessLayer.Services
         {
             this.notesRL = notesRL;
         }
-        public bool CreateNotes(NotesModel notesModel)
+        public bool CreateNotes(NotesModel notesModel,long userId)
         {
             try
             {
-                return notesRL.CreateNotes(notesModel);
+                return notesRL.CreateNotes(notesModel, userId);
             }
             catch (Exception)
             {
@@ -143,6 +143,6 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
-
+      
     }
 }
