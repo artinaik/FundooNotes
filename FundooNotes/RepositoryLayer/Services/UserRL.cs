@@ -32,7 +32,7 @@ namespace RepositoryLayer.Services
                 newuser.FirstName = user.FirstName;
                 newuser.LastName = user.LastName;
                 newuser.Email = user.Email;
-                newuser.Password = user.Password;
+                newuser.Password = EncryptPassword(user.Password);
                 context.Users.Add(newuser);
                 int result = context.SaveChanges();//save all changes in database also
                 if (result > 0)
@@ -47,15 +47,48 @@ namespace RepositoryLayer.Services
                 throw;
             }
         }
+        public string EncryptPassword(string password)
+        {
+            try
+            {
+                byte[] encode = new byte[password.Length];
+                encode = Encoding.UTF8.GetBytes(password);
+                string encPassword = Convert.ToBase64String(encode);
+                return encPassword;
+            }
+            catch (Exception)
+            {
+                throw;
+            }         
+        }
+        public string DecryptPassword(string encryptpwd)
+        {
+            try
+            {
+                UTF8Encoding encodepwd = new UTF8Encoding();
+                Decoder Decode = encodepwd.GetDecoder();
+                byte[] todecode_byte = Convert.FromBase64String(encryptpwd);
+                int charCount = Decode.GetCharCount(todecode_byte, 0, todecode_byte.Length);
+                char[] decoded_char = new char[charCount];
+                Decode.GetChars(todecode_byte, 0, todecode_byte.Length, decoded_char, 0);
+                string decryptpwd = new String(decoded_char);
+                return decryptpwd;
+            }
+            catch (Exception)
+            {
 
+                throw;
+            }          
+        }
         public string Login(UserLogin userLogin)
         {
             try
             {
-                User user = new User();
-                user = context.Users.Where(x => x.Email == userLogin.Email && x.Password == userLogin.Password).FirstOrDefault();
+                User user = new User();               
+                user = context.Users.Where(x => x.Email == userLogin.Email).FirstOrDefault();
+                string decPass = DecryptPassword(user.Password);
                 var id = user.Id;
-                if(user!=null)
+                if(decPass==userLogin.Password&&user!=null)
                     return ClaimTokenByID(id);
                 else
                     return null;

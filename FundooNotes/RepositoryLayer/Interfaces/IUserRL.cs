@@ -13,5 +13,7 @@ namespace RepositoryLayer.Interfaces
         public string ForgetPassword(string email);
         public bool ResetPassword(string email, string password, string confirmPassword);
         public string ClaimTokenByID(long Id);
+        public string EncryptPassword(string password);
+        public string DecryptPassword(string encryptpwd);
     }
 }
