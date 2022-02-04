@@ -31,9 +31,10 @@ namespace FundooNotes.Controllers
                 collabaoratorModel.Id = userId;
                 collabaoratorModel.NoteID = noteID;
                 collabaoratorModel.CollabEmail = collabEmail;
-                if (collabBL.AddCollaborator(collabaoratorModel))
+                var result = collabBL.AddCollaborator(collabaoratorModel);
+                if (result!=null)
                 {
-                    return this.Ok(new { Success = true, message = "Collaborator added successfully" });
+                    return this.Ok(new { Success = true, message = "Collaborator added successfully",Response= result });
                 }
                 else
                 {

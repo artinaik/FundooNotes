@@ -27,9 +27,10 @@ namespace FundooNotes.Controllers
             try
             {
                 long userID = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                if (labelBL.CreateLabel(userID, noteID, labelName))
+                var result = labelBL.CreateLabel(userID, noteID, labelName);
+                if (result!=null)
                 {
-                    return this.Ok(new { success = true, message = "Label added successfully" });
+                    return this.Ok(new { success = true, message = "Label added successfully" ,Response= result });
                 }
                 else
                 {
@@ -50,9 +51,10 @@ namespace FundooNotes.Controllers
             try
             {
                 long userID = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
-                if (labelBL.RenameLabel(userID, lableName, newLabelName))
+                var result = labelBL.RenameLabel(userID, lableName, newLabelName);
+                if (result!=null)
                 {
-                    return this.Ok(new { success = true, message = "Label renamed successfully" });
+                    return this.Ok(new { success = true, message = "Label renamed successfully",Response= result });
                 }
                 else
                 {
@@ -74,6 +76,28 @@ namespace FundooNotes.Controllers
             {
                 long userID = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
                 if (labelBL.RemoveLabel(userID, lableName))
+                {
+                    return this.Ok(new { success = true, message = "Label removed successfully" });
+                }
+                else
+                {
+                    return this.BadRequest(new { success = false, message = "User access denied" });
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        [Authorize]
+        [HttpDelete]
+        public IActionResult RemoveLabelByNoteID(long noteID,string lableName)
+        {
+            try
+            {
+                long userID = Convert.ToInt32(User.Claims.FirstOrDefault(e => e.Type == "Id").Value);
+                if (labelBL.RemoveLabelByNoteID(userID, noteID,lableName))
                 {
                     return this.Ok(new { success = true, message = "Label removed successfully" });
                 }

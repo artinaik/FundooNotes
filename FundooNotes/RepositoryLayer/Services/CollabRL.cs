@@ -19,7 +19,7 @@ namespace RepositoryLayer.Services
             this.context = context;//appcontext to for api
             this.configuration = config;//for startup file instance
         }
-        public bool AddCollaborator(CollabaoratorModel collabaoratorModel)
+        public Collaborator AddCollaborator(CollabaoratorModel collabaoratorModel)
         {
             try
             {
@@ -32,11 +32,11 @@ namespace RepositoryLayer.Services
                     collaborator.Id = collabaoratorModel.Id;
                     context.Collaborators.Add(collaborator);
                     var result = context.SaveChanges();
-                    return true;
+                    return collaborator;
                 }
                 else
                 {
-                    return false;
+                    return null;
                 }
             }
             catch (Exception)

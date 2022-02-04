@@ -15,7 +15,7 @@ namespace BusinessLayer.Services
         {
             this.collabRL = collabRL;
         }
-        public bool AddCollaborator(CollabaoratorModel collabaoratorModel)
+        public Collaborator AddCollaborator(CollabaoratorModel collabaoratorModel)
         {
             try
             {

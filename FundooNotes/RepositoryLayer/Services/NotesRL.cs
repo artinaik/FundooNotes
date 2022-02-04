@@ -29,7 +29,7 @@ namespace RepositoryLayer.Services
             this.configuration = config;//for startup file instance
             this.hostingEnvironment = hostingEnvironment;
         }
-        public bool CreateNotes(NotesModel notesModel,long userId)
+        public Notes CreateNotes(NotesModel notesModel,long userId)
         {
             try
             {
@@ -46,9 +46,9 @@ namespace RepositoryLayer.Services
                 context.Notes.Add(notes);
                 var result = context.SaveChanges();
                 if (result > 0)
-                    return true;
+                    return notes;
                 else
-                    return false;
+                    return null;
             }
             catch (Exception)
             {
@@ -80,7 +80,7 @@ namespace RepositoryLayer.Services
 
 
         }
-        public bool UpdateNotes(int noteID, UpdateNotesModel notesModel)
+        public Notes UpdateNotes(int noteID, UpdateNotesModel notesModel)
         {
             Notes notes = context.Notes.Where(e => e.NoteId == noteID).FirstOrDefault();
             notes.Title = notesModel.Title;
@@ -94,11 +94,11 @@ namespace RepositoryLayer.Services
             context.Notes.Update(notes);
             var result = context.SaveChanges();
             if (result > 0)
-                return true;
+                return notes;
             else
-                return false;
+                return null;
         }
-        public bool Colorchange(long userId, long noteID, string color)
+        public Notes Colorchange(long userId, long noteID, string color)
         {
             try
             {
@@ -107,11 +107,11 @@ namespace RepositoryLayer.Services
                 {
                     note.Color = color;
                     context.SaveChanges();
-                    return true;
+                    return note;
                 }
                 else
                 {
-                    return false;
+                    return null;
                 }
             }
             catch (Exception)
@@ -121,7 +121,7 @@ namespace RepositoryLayer.Services
             }
 
         }
-        public bool ArchieveChange(long userId, long noteID)
+        public Notes ArchieveChange(long userId, long noteID)
         {
             try
             {
@@ -138,11 +138,11 @@ namespace RepositoryLayer.Services
                         note.IsArchive = true;
                     }
                     context.SaveChanges();
-                    return true;
+                    return note;
                 }
                 else
                 {
-                    return false;
+                    return null;
                 }
             }
             catch (Exception)
@@ -152,7 +152,7 @@ namespace RepositoryLayer.Services
             }
 
         }
-        public bool PinChange(long userId, long noteID)
+        public Notes PinChange(long userId, long noteID)
         {
             try
             {
@@ -169,11 +169,11 @@ namespace RepositoryLayer.Services
                         note.IsPin = true;
                     }
                     context.SaveChanges();
-                    return true;
+                    return note;
                 }
                 else
                 {
-                    return false;
+                    return null;
                 }
             }
             catch (Exception)
@@ -183,7 +183,7 @@ namespace RepositoryLayer.Services
             }
 
         }
-        public bool TrashChange(long userId, long noteID)
+        public Notes TrashChange(long userId, long noteID)
         {
             try
             {
@@ -200,11 +200,11 @@ namespace RepositoryLayer.Services
                         note.IsTrash = true;
                     }
                     context.SaveChanges();
-                    return true;
+                    return note;
                 }
                 else
                 {
-                    return false;
+                    return null;
                 }
             }
             catch (Exception)
@@ -214,7 +214,7 @@ namespace RepositoryLayer.Services
             }
 
         }
-        public bool UploadImage(long userId,long noteID,IFormFile file)
+        public Notes UploadImage(long userId,long noteID,IFormFile file)
         {
             try
             {
@@ -230,11 +230,11 @@ namespace RepositoryLayer.Services
                 {
                     note.Image = file.FileName;
                     var result = context.SaveChanges();
-                    return true;
+                    return note;
                 }
                 else
                 {
-                    return false;
+                    return null;
                 }
             }
             catch (Exception)

@@ -9,16 +9,16 @@ namespace RepositoryLayer.Interfaces
 {
     public interface INotesRL
     {
-        public bool CreateNotes(NotesModel notesModel,long userId);
+        public Notes CreateNotes(NotesModel notesModel,long userId);
         public IEnumerable<Notes> GetAllNotes();
         public IEnumerable<Notes> GetAllNotesByUserID(int id);
         public bool DeleteNote(int notesID);
-        public bool UpdateNotes(int noteID, UpdateNotesModel notesModel);
-        public bool Colorchange(long userId,long noteID, string color);
-        public bool ArchieveChange(long userId, long noteID);
-        public bool PinChange(long userId, long noteID);
-        public bool TrashChange(long userId, long noteID);
-        public bool UploadImage(long userId, long noteID, IFormFile file);
+        public Notes UpdateNotes(int noteID, UpdateNotesModel notesModel);
+        public Notes Colorchange(long userId,long noteID, string color);
+        public Notes ArchieveChange(long userId, long noteID);
+        public Notes PinChange(long userId, long noteID);
+        public Notes TrashChange(long userId, long noteID);
+        public Notes UploadImage(long userId, long noteID, IFormFile file);
        
 
     }

@@ -14,7 +14,7 @@ namespace BusinessLayer.Services
         {
             this.labelRL = labelRL;
         }
-        public bool CreateLabel(long userID, long noteID, string labelName)
+        public Labels CreateLabel(long userID, long noteID, string labelName)
         {
             try
             {
@@ -26,7 +26,7 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
-        public bool RenameLabel(long userID, string oldLabelName,string labelName)
+        public IEnumerable<Labels> RenameLabel(long userID, string oldLabelName,string labelName)
         {
             try
             {
@@ -43,6 +43,18 @@ namespace BusinessLayer.Services
             try
             {
                 return labelRL.RemoveLabel(userID, labelName);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public bool RemoveLabelByNoteID(long userID,long noteID, string labelName)
+        {
+            try
+            {
+                return labelRL.RemoveLabelByNoteID(userID, noteID, labelName);
             }
             catch (Exception)
             {

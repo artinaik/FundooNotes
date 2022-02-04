@@ -24,7 +24,12 @@ namespace RepositoryLayer.Services
             this.context = context;//appcontext to for api
             this.configuration = config;//for startup file instance
         }
-        public bool Registration(UserRegistration user)
+        /// <summary>
+        /// This method add new user in application and save in databse
+        /// </summary>
+        /// <param name="user">It is object of model class for new user entry</param>
+        /// <returns>It returns newly created user from database</returns>
+        public User Registration(UserRegistration user)
         {
             try
             {
@@ -34,11 +39,11 @@ namespace RepositoryLayer.Services
                 newuser.Email = user.Email;
                 newuser.Password = EncryptPassword(user.Password);
                 context.Users.Add(newuser);
-                int result = context.SaveChanges();//save all changes in database also
+                int result = context.SaveChanges();
                 if (result > 0)
-                    return true;
+                    return newuser;
                 else
-                    return false;
+                    return null;
 
             }
             catch (Exception)
@@ -47,6 +52,11 @@ namespace RepositoryLayer.Services
                 throw;
             }
         }
+        /// <summary>
+        /// this method converts the user given password into encoded format
+        /// </summary>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public string EncryptPassword(string password)
         {
             try
@@ -157,7 +167,7 @@ namespace RepositoryLayer.Services
                 if (password.Equals(confirmPassword))
                 {
                     User user = context.Users.Where(e => e.Email==email).FirstOrDefault();
-                    user.Password = confirmPassword;
+                    user.Password = EncryptPassword(confirmPassword);
                     context.SaveChanges();
                     return true;
                 }

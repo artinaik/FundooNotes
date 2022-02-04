@@ -17,7 +17,7 @@ namespace BusinessLayer.Services
         {
             this.notesRL = notesRL;
         }
-        public bool CreateNotes(NotesModel notesModel,long userId)
+        public Notes CreateNotes(NotesModel notesModel,long userId)
         {
             try
             {
@@ -68,14 +68,12 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
-        public bool UpdateNotes(int noteID,UpdateNotesModel notesModel)
+        public Notes UpdateNotes(int noteID,UpdateNotesModel notesModel)
         {
             try
             {
-                if (notesRL.UpdateNotes(noteID,notesModel))
-                    return true;
-                else
-                    return false;
+                return notesRL.UpdateNotes(noteID, notesModel);
+                  
             }
             catch (Exception)
             {
@@ -83,7 +81,7 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
-        public bool Colorchange(long userId, long noteID, string color)
+        public Notes Colorchange(long userId, long noteID, string color)
         {
             try
             {
@@ -95,7 +93,7 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
-        public bool ArchieveChange(long userId, long noteID)
+        public Notes ArchieveChange(long userId, long noteID)
         {
             try
             {
@@ -107,7 +105,7 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
-        public bool PinChange(long userId, long noteID)
+        public Notes PinChange(long userId, long noteID)
         {
             try
             {
@@ -119,7 +117,7 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
-        public bool TrashChange(long userId, long noteID)
+        public Notes TrashChange(long userId, long noteID)
         {
             try
             {
@@ -131,7 +129,7 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
-        public bool UploadImage(long userId, long noteID, IFormFile file)
+        public Notes UploadImage(long userId, long noteID, IFormFile file)
         {
             try
             {

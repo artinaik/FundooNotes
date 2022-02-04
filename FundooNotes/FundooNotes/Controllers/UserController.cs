@@ -22,15 +22,15 @@ namespace FundooNotes.Controllers
         {
             this.userBL = userBL;
         }
-
         [HttpPost]
         public IActionResult AddUser(UserRegistration user)
         {
             try
             {
-                if(userBL.Registration(user))
+                var result = userBL.Registration(user);
+                if (result!=null)
                 {
-                    return this.Ok(new { Success = true, message = "Registration successfull" });
+                    return this.Ok(new { success = true, message = "Registration successfull" ,Response = result });
                 }
                 else
                 {
@@ -39,11 +39,9 @@ namespace FundooNotes.Controllers
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
-
         
         [HttpPost]
         public IActionResult Login(UserLogin login)

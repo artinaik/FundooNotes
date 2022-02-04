@@ -18,7 +18,7 @@ namespace RepositoryLayer.Services
             this.context = context;//appcontext to for api
             this.configuration = config;//for startup file instance
         }
-        public bool CreateLabel(long userID,long noteID,string labelName)
+        public Labels CreateLabel(long userID,long noteID,string labelName)
         {
             try
             {
@@ -31,11 +31,11 @@ namespace RepositoryLayer.Services
                     labels.Id = userID;
                     context.Labels.Add(labels);
                     context.SaveChanges();
-                    return true;
+                    return labels;
                 }
                 else
                 {
-                    return false;
+                    return null;
                 }
               
             }
@@ -46,7 +46,7 @@ namespace RepositoryLayer.Services
             }
 
         }
-        public bool RenameLabel(long userID,string oldLabelName,string labelName)
+        public IEnumerable<Labels> RenameLabel(long userID,string oldLabelName,string labelName)
         {
             IEnumerable<Labels> labels;
             labels = context.Labels.Where(e =>e.Id==userID&&e.LabelName==oldLabelName).ToList();
@@ -57,11 +57,11 @@ namespace RepositoryLayer.Services
                     label.LabelName = labelName;
                 }             
                 context.SaveChanges();
-                return true;
+                return labels;
             }
             else
             {
-                return false;
+                return null;
             }
            
         }
@@ -75,6 +75,21 @@ namespace RepositoryLayer.Services
                 {
                     context.Labels.Remove(label);
                 }
+                context.SaveChanges();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        public bool RemoveLabelByNoteID(long userID,long noteID, string labelName)
+        {
+            var label = context.Labels.Where(e => e.Id == userID && e.LabelName == labelName && e.NoteID == noteID).FirstOrDefault();
+            if (label != null)
+            {
+                context.Labels.Remove(label);
                 context.SaveChanges();
                 return true;
             }

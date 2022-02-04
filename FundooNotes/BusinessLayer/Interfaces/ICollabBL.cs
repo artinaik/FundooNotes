@@ -8,7 +8,7 @@ namespace BusinessLayer.Interfaces
 {
     public interface ICollabBL
     {
-        public bool AddCollaborator(CollabaoratorModel collabaoratorModel);
+        public Collaborator AddCollaborator(CollabaoratorModel collabaoratorModel);
         public IEnumerable<Collaborator> GetCollaboratorsByID(long userID, long noteID);
         public bool RemoveCollaborator(long userID, long noteID, string collabEmail);
     }
